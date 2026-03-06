@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Akwasi Aidoo — CV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root{
+    --bg:#060d18;
+    --surface:#0b1525;
+    --border:rgba(0,229,255,0.12);
+    --accent:#00E5FF;
+    --accent2:#00b8cc;
+    --text:#c8d8e8;
+    --muted:#5a7a96;
+    --white:#F0F4FF;
+    --display:'Barlow Condensed',sans-serif;
+    --mono:'JetBrains Mono',monospace;
+    --body:'Barlow',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--body);
+    font-size:15px;
+    line-height:1.6;
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+
+  /* NOISE TEXTURE */
+  body::before{
+    content:'';
+    position:fixed;inset:0;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events:none;z-index:0;opacity:0.4;
+  }
+
+  /* GRID LINES BG */
+  body::after{
+    content:'';
+    position:fixed;inset:0;
+    background-image:
+      linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
+    background-size:60px 60px;
+    pointer-events:none;z-index:0;
+  }
+
+  /* CURSOR */
+  .cursor{position:fixed;width:8px;height:8px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform 0.1s;mix-blend-mode:screen;}
+  .cursor-ring{position:fixed;width:32px;height:32px;border:1px solid rgba(0,229,255,0.4);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all 0.15s ease;}
+
+  /* HEADER */
+  header{
+    position:relative;z-index:10;
+    padding:3rem 0 2rem;
+    border-bottom:1px solid var(--border);
+    background:linear-gradient(180deg,rgba(0,229,255,0.04) 0%,transparent 100%);
+  }
+  .header-inner{
+    max-width:900px;margin:0 auto;
+    padding:0 2.5rem;
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:2rem;
+    align-items:end;
+  }
+  .header-tag{
+    font-family:var(--mono);
+    font-size:0.7rem;
+    letter-spacing:0.15em;
+    color:var(--accent);
+    text-transform:uppercase;
+    margin-bottom:0.8rem;
+    display:flex;align-items:center;gap:0.5rem;
+  }
+  .header-tag::before{content:'>';color:var(--muted);}
+  h1{
+    font-family:var(--display);
+    font-size:clamp(3rem,8vw,5.5rem);
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:0.02em;
+    line-height:0.9;
+    color:var(--white);
+  }
+  h1 span{color:var(--accent);}
+  .header-role{
+    font-family:var(--mono);
+    font-size:0.75rem;
+    letter-spacing:0.1em;
+    color:var(--muted);
+    text-transform:uppercase;
+    margin-top:0.8rem;
+  }
+  .header-contacts{
+    display:flex;flex-direction:column;gap:0.4rem;
+    text-align:right;
+  }
+  .contact-item{
+    font-family:var(--mono);
+    font-size:0.72rem;
+    color:var(--muted);
+    text-decoration:none;
+    letter-spacing:0.05em;
+    transition:color 0.2s;
+    display:flex;align-items:center;gap:0.4rem;
+    justify-content:flex-end;
+  }
+  .contact-item:hover{color:var(--accent);}
+  .contact-item .ci{font-size:0.6rem;color:var(--accent);opacity:0.6;}
+
+  /* DOWNLOAD BTN */
+  .dl-btn{
+    margin-top:1.2rem;
+    display:inline-flex;align-items:center;gap:0.5rem;
+    font-family:var(--mono);font-size:0.7rem;
+    letter-spacing:0.1em;text-transform:uppercase;
+    color:var(--bg);background:var(--accent);
+    padding:0.5rem 1rem;
+    text-decoration:none;
+    transition:all 0.2s;
+    cursor:pointer;border:none;
+  }
+  .dl-btn:hover{background:var(--white);transform:translateY(-1px);}
+
+  /* NAV */
+  .cv-nav{
+    position:sticky;top:0;z-index:100;
+    background:rgba(6,13,24,0.92);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--border);
+    padding:0 2.5rem;
+  }
+  .cv-nav-inner{
+    max-width:900px;margin:0 auto;
+    display:flex;gap:0;
+    overflow-x:auto;
+  }
+  .cv-nav-inner::-webkit-scrollbar{display:none;}
+  .nav-item{
+    font-family:var(--mono);
+    font-size:0.68rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--muted);
+    padding:0.9rem 1.2rem;
+    text-decoration:none;
+    border-bottom:2px solid transparent;
+    transition:all 0.2s;
+    white-space:nowrap;
+  }
+  .nav-item:hover,.nav-item.active{color:var(--accent);border-bottom-color:var(--accent);}
+
+  /* MAIN LAYOUT */
+  main{
+    max-width:900px;margin:0 auto;
+    padding:3rem 2.5rem;
+    position:relative;z-index:1;
+  }
+
+  /* SECTION */
+  .cv-section{
+    margin-bottom:3.5rem;
+    opacity:0;transform:translateY(20px);
+    transition:opacity 0.5s ease, transform 0.5s ease;
+  }
+  .cv-section.visible{opacity:1;transform:translateY(0);}
+
+  .section-header{
+    display:flex;align-items:center;gap:1rem;
+    margin-bottom:1.8rem;
+  }
+  .section-num{
+    font-family:var(--mono);
+    font-size:0.65rem;
+    color:var(--accent);
+    letter-spacing:0.1em;
+    opacity:0.6;
+  }
+  .section-title{
+    font-family:var(--display);
+    font-size:1.6rem;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:var(--white);
+  }
+  .section-line{
+    flex:1;height:1px;
+    background:linear-gradient(90deg,var(--border),transparent);
+  }
+
+  /* SUMMARY */
+  .summary-text{
+    font-size:0.95rem;
+    line-height:1.75;
+    color:var(--text);
+    max-width:720px;
+    padding-left:1.2rem;
+    border-left:2px solid var(--accent);
+  }
+
+  /* SKILLS GRID */
+  .skills-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+    gap:1px;
+    background:var(--border);
+    border:1px solid var(--border);
+  }
+  .skill-item{
+    background:var(--surface);
+    padding:0.9rem 1.2rem;
+    display:grid;
+    grid-template-columns:auto 1fr;
+    gap:0.8rem;
+    align-items:start;
+    transition:background 0.2s;
+  }
+  .skill-item:hover{background:rgba(0,229,255,0.04);}
+  .skill-label{
+    font-family:var(--mono);
+    font-size:0.65rem;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--accent);
+    white-space:nowrap;
+    padding-top:0.1rem;
+  }
+  .skill-tags{
+    display:flex;flex-wrap:wrap;gap:0.3rem;
+  }
+  .skill-tag{
+    font-family:var(--mono);
+    font-size:0.62rem;
+    color:var(--muted);
+    background:rgba(0,229,255,0.05);
+    border:1px solid var(--border);
+    padding:0.15rem 0.45rem;
+    letter-spacing:0.05em;
+  }
+
+  /* EXPERIENCE ENTRIES */
+  .exp-entry{
+    display:grid;
+    grid-template-columns:140px 1fr;
+    gap:0 2rem;
+    margin-bottom:2rem;
+    padding-bottom:2rem;
+    border-bottom:1px solid var(--border);
+  }
+  .exp-entry:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+  .exp-meta{
+    padding-top:0.15rem;
+  }
+  .exp-period{
+    font-family:var(--mono);
+    font-size:0.62rem;
+    letter-spacing:0.08em;
+    color:var(--accent);
+    text-transform:uppercase;
+    line-height:1.4;
+  }
+  .exp-company{
+    font-family:var(--mono);
+    font-size:0.65rem;
+    color:var(--muted);
+    margin-top:0.4rem;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+  }
+  .exp-badge{
+    display:inline-block;
+    margin-top:0.5rem;
+    font-family:var(--mono);
+    font-size:0.55rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--bg);
+    background:var(--accent);
+    padding:0.15rem 0.4rem;
+  }
+  .exp-role{
+    font-family:var(--display);
+    font-size:1.25rem;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+    color:var(--white);
+    margin-bottom:0.7rem;
+  }
+  .exp-bullets{
+    list-style:none;
+    display:flex;flex-direction:column;gap:0.35rem;
+  }
+  .exp-bullets li{
+    font-size:0.88rem;
+    color:var(--text);
+    padding-left:1rem;
+    position:relative;
+    line-height:1.6;
+  }
+  .exp-bullets li::before{
+    content:'—';
+    position:absolute;left:0;
+    color:var(--accent);
+    opacity:0.5;
+    font-size:0.7rem;
+    top:0.15rem;
+  }
+
+  /* METRICS ROW */
+  .metrics-row{
+    display:flex;gap:1.5rem;
+    margin-top:0.8rem;
+    flex-wrap:wrap;
+  }
+  .metric{
+    display:flex;flex-direction:column;
+  }
+  .metric-val{
+    font-family:var(--display);
+    font-size:1.4rem;
+    font-weight:700;
+    color:var(--accent);
+    line-height:1;
+  }
+  .metric-label{
+    font-family:var(--mono);
+    font-size:0.58rem;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-top:0.2rem;
+  }
+
+  /* EDU */
+  .edu-entry{
+    display:grid;
+    grid-template-columns:140px 1fr;
+    gap:0 2rem;
+    margin-bottom:1.5rem;
+    padding-bottom:1.5rem;
+    border-bottom:1px solid var(--border);
+  }
+  .edu-entry:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+  .edu-year{
+    font-family:var(--mono);
+    font-size:0.62rem;
+    color:var(--accent);
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    padding-top:0.15rem;
+  }
+  .edu-institution{
+    font-family:var(--mono);
+    font-size:0.62rem;
+    color:var(--muted);
+    margin-top:0.3rem;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+  }
+  .edu-qual{
+    font-family:var(--display);
+    font-size:1.1rem;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+    color:var(--white);
+    margin-bottom:0.4rem;
+  }
+  .edu-detail{
+    font-size:0.85rem;
+    color:var(--muted);
+    line-height:1.5;
+  }
+  .edu-status{
+    display:inline-block;
+    margin-top:0.4rem;
+    font-family:var(--mono);
+    font-size:0.55rem;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--accent);
+    border:1px solid var(--accent);
+    padding:0.15rem 0.5rem;
+    animation:pulse-border 2s ease-in-out infinite;
+  }
+  @keyframes pulse-border{
+    0%,100%{border-color:var(--accent);color:var(--accent);}
+    50%{border-color:rgba(0,229,255,0.3);color:rgba(0,229,255,0.5);}
+  }
+
+  /* PROGRESS BAR */
+  .progress-wrap{
+    margin-top:0.6rem;
+    display:flex;align-items:center;gap:0.8rem;
+  }
+  .progress-bar{
+    flex:1;height:2px;
+    background:rgba(0,229,255,0.1);
+    max-width:180px;
+  }
+  .progress-fill{
+    height:100%;
+    background:linear-gradient(90deg,var(--accent),var(--accent2));
+    width:0%;
+    transition:width 1.2s ease;
+    box-shadow:0 0 6px rgba(0,229,255,0.6);
+  }
+  .progress-label{
+    font-family:var(--mono);
+    font-size:0.6rem;
+    color:var(--muted);
+    letter-spacing:0.08em;
+    white-space:nowrap;
+  }
+
+  /* STRENGTHS */
+  .strengths-wrap{
+    display:flex;flex-wrap:wrap;gap:0.6rem;
+  }
+  .strength-pill{
+    font-family:var(--mono);
+    font-size:0.65rem;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--text);
+    border:1px solid var(--border);
+    padding:0.4rem 0.9rem;
+    transition:all 0.2s;
+    position:relative;overflow:hidden;
+  }
+  .strength-pill::before{
+    content:'';
+    position:absolute;inset:0;
+    background:var(--accent);
+    transform:translateX(-100%);
+    transition:transform 0.3s ease;
+    z-index:-1;
+  }
+  .strength-pill:hover{color:var(--bg);border-color:var(--accent);}
+  .strength-pill:hover::before{transform:translateX(0);}
+
+  /* FOOTER */
+  footer{
+    border-top:1px solid var(--border);
+    padding:2rem 2.5rem;
+    max-width:900px;margin:0 auto;
+    display:flex;align-items:center;justify-content:space-between;
+    position:relative;z-index:1;
+  }
+  .footer-left{
+    font-family:var(--mono);
+    font-size:0.65rem;
+    color:var(--muted);
+    letter-spacing:0.08em;
+  }
+  .footer-left a{color:var(--accent);text-decoration:none;}
+  .footer-right{
+    font-family:var(--mono);
+    font-size:0.65rem;
+    color:var(--muted);
+    letter-spacing:0.05em;
+  }
+
+  /* PRINT */
+  @media print{
+    body::before,body::after,.cursor,.cursor-ring,.cv-nav,.dl-btn,footer{display:none!important;}
+    body{background:#fff;color:#111;}
+    :root{--bg:#fff;--surface:#f5f5f5;--accent:#0077aa;--text:#333;--muted:#666;--white:#000;--border:#ddd;}
+    .cv-section{opacity:1!important;transform:none!important;}
+    header{background:none;border-bottom:2px solid #0077aa;}
+    main{padding:1rem 0;}
+    .exp-entry,.edu-entry{break-inside:avoid;}
+  }
+
+  @media(max-width:640px){
+    .header-inner{grid-template-columns:1fr;gap:1.5rem;}
+    .header-contacts{text-align:left;}
+    .contact-item{justify-content:flex-start;}
+    .exp-entry,.edu-entry{grid-template-columns:1fr;gap:0.3rem;}
+    .exp-meta,.edu-year{display:flex;gap:1rem;flex-wrap:wrap;align-items:baseline;}
+    .skills-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <div>
+      <div class="header-tag">Curriculum Vitae</div>
+      <h1>AKWASI<br/><span>AIDOO</span></h1>
+      <div class="header-role">Data Analyst &nbsp;/&nbsp; Technical Analyst &nbsp;/&nbsp; IT Operations</div>
+    </div>
+    <div class="header-contacts">
+      <a href="tel:+447507045782" class="contact-item"><span class="ci">☎</span> +44 7507 045 782</a>
+      <a href="mailto:work@akwasi.me" class="contact-item"><span class="ci">@</span> work@akwasi.me</a>
+      <a href="https://akwasi.me" target="_blank" class="contact-item"><span class="ci">↗</span> akwasi.me</a>
+      <a href="https://www.linkedin.com/in/akwasi-aidoo-66a4a5251/" target="_blank" class="contact-item"><span class="ci">in</span> LinkedIn</a>
+      <a href="https://maps.google.com/?q=East+London" target="_blank" class="contact-item"><span class="ci">◎</span> East London, UK</a>
+      <button class="dl-btn" onclick="window.print()">↓ &nbsp;Download PDF</button>
+    </div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav class="cv-nav">
+  <div class="cv-nav-inner">
+    <a href="#summary" class="nav-item active">Summary</a>
+    <a href="#skills" class="nav-item">Skills</a>
+    <a href="#experience" class="nav-item">Experience</a>
+    <a href="#projects" class="nav-item">Projects</a>
+    <a href="#education" class="nav-item">Education</a>
+    <a href="#strengths" class="nav-item">Strengths</a>
+  </div>
+</nav>
+
+<main>
+
+  <!-- SUMMARY -->
+  <section class="cv-section" id="summary">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2 class="section-title">Summary</h2>
+      <div class="section-line"></div>
+    </div>
+    <p class="summary-text">Data-focused technical professional with proven experience managing IT infrastructure, growing online communities, and delivering measurable business results. Currently completing the Google Data Analytics Certificate. Seeking a junior data analyst, technical analyst, or IT operations role in London where I can apply analytical thinking and hands-on technical expertise.</p>
+  </section>
+
+  <!-- SKILLS -->
+  <section class="cv-section" id="skills">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2 class="section-title">Core Skills</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-item">
+        <span class="skill-label">Data</span>
+        <div class="skill-tags">
+          <span class="skill-tag">SQL</span>
+          <span class="skill-tag">Google Sheets</span>
+          <span class="skill-tag">Tableau</span>
+          <span class="skill-tag">Data Storytelling</span>
+        </div>
+      </div>
+      <div class="skill-item">
+        <span class="skill-label">Infra</span>
+        <div class="skill-tags">
+          <span class="skill-tag">Linux/VPS</span>
+          <span class="skill-tag">Server Admin</span>
+          <span class="skill-tag">99% Uptime SLA</span>
+        </div>
+      </div>
+      <div class="skill-item">
+        <span class="skill-label">Network</span>
+        <div class="skill-tags">
+          <span class="skill-tag">TCP/IP</span>
+          <span class="skill-tag">DNS</span>
+          <span class="skill-tag">Firewalls</span>
+          <span class="skill-tag">Troubleshooting</span>
+        </div>
+      </div>
+      <div class="skill-item">
+        <span class="skill-label">Panels</span>
+        <div class="skill-tags">
+          <span class="skill-tag">cPanel</span>
+          <span class="skill-tag">Pterodactyl</span>
+          <span class="skill-tag">Multicraft</span>
+          <span class="skill-tag">FTP/SFTP</span>
+        </div>
+      </div>
+      <div class="skill-item">
+        <span class="skill-label">Hardware</span>
+        <div class="skill-tags">
+          <span class="skill-tag">Custom PC Builds</span>
+          <span class="skill-tag">Assembly</span>
+          <span class="skill-tag">OS Install</span>
+        </div>
+      </div>
+      <div class="skill-item">
+        <span class="skill-label">CAD/Eng</span>
+        <div class="skill-tags">
+          <span class="skill-tag">2D/3D CAD</span>
+          <span class="skill-tag">Mechanical</span>
+          <span class="skill-tag">Electrical</span>
+        </div>
+      </div>
+      <div class="skill-item">
+        <span class="skill-label">Growth</span>
+        <div class="skill-tags">
+          <span class="skill-tag">Social Strategy</span>
+          <span class="skill-tag">Client Acquisition</span>
+          <span class="skill-tag">Budget Mgmt</span>
+        </div>
+      </div>
+      <div class="skill-item">
+        <span class="skill-label">Software</span>
+        <div class="skill-tags">
+          <span class="skill-tag">MS Office 365</span>
+          <span class="skill-tag">Google Workspace</span>
+          <span class="skill-tag">HTML/CSS</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section class="cv-section" id="experience">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2 class="section-title">Experience</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="exp-entry">
+      <div class="exp-meta">
+        <div class="exp-period">Feb 2026<br/>Present</div>
+        <div class="exp-company">Starbucks</div>
+        <div class="exp-badge">Current</div>
+      </div>
+      <div>
+        <div class="exp-role">Assistant Manager</div>
+        <ul class="exp-bullets">
+          <li>Supervising and coordinating a team in a high-volume retail environment, ensuring consistent service and quality standards.</li>
+          <li>Monitoring KPIs including sales performance and waste control to drive operational efficiency.</li>
+          <li>Managing rota planning, stock management, and workforce allocation across shifts.</li>
+          <li>Handling escalated customer issues and supporting ongoing staff training and development.</li>
+          <li>Promoted from Barista after 9 months, recognised for leadership, reliability, and performance.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-entry">
+      <div class="exp-meta">
+        <div class="exp-period">Apr 2025<br/>Jan 2026</div>
+        <div class="exp-company">Starbucks</div>
+      </div>
+      <div>
+        <div class="exp-role">Barista</div>
+        <ul class="exp-bullets">
+          <li>Delivered high-quality service in a fast-paced, high-volume environment serving hundreds of customers daily.</li>
+          <li>Operated POS systems accurately, handled transactions, and maintained compliance with hygiene standards.</li>
+          <li>Collaborated with a team of 10+ during peak hours, demonstrating strong communication and task prioritisation.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-entry">
+      <div class="exp-meta">
+        <div class="exp-period">Mar 2021<br/>Dec 2022</div>
+        <div class="exp-company">NightNodes Hosting</div>
+      </div>
+      <div>
+        <div class="exp-role">Infrastructure & Ops Lead</div>
+        <ul class="exp-bullets">
+          <li>Managed all server infrastructure including VPS configuration, DNS, firewall rules, and 24/7 technical troubleshooting.</li>
+          <li>Grew the client base by 30% through data-driven social media campaigns and targeted marketing analytics.</li>
+          <li>Handled all customer support, pricing, invoicing, and financial planning to maintain profitability.</li>
+          <li>Maintained 99% uptime SLA across all hosted services throughout the business lifecycle.</li>
+        </ul>
+        <div class="metrics-row">
+          <div class="metric"><span class="metric-val">+30%</span><span class="metric-label">Client Growth</span></div>
+          <div class="metric"><span class="metric-val">99%</span><span class="metric-label">Uptime SLA</span></div>
+          <div class="metric"><span class="metric-val">200+</span><span class="metric-label">Clients Served</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section class="cv-section" id="projects">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2 class="section-title">Projects</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="exp-entry">
+      <div class="exp-meta">
+        <div class="exp-period">Jan 2020<br/>Nov 2023</div>
+        <div class="exp-company">oreo.gg</div>
+      </div>
+      <div>
+        <div class="exp-role">OreoMC — Game Server Owner</div>
+        <ul class="exp-bullets">
+          <li>Operated a public Minecraft server, managing all server-side administration and community engagement independently.</li>
+          <li>Built and maintained an in-game e-commerce store, achieving a 25% increase in revenue and 40% improvement in player retention.</li>
+          <li>Drove a 50% increase in server traffic through data-driven social media marketing and Discord community building.</li>
+        </ul>
+        <div class="metrics-row">
+          <div class="metric"><span class="metric-val">10K+</span><span class="metric-label">Monthly Players</span></div>
+          <div class="metric"><span class="metric-val">+50%</span><span class="metric-label">Traffic Growth</span></div>
+          <div class="metric"><span class="metric-val">+25%</span><span class="metric-label">Revenue</span></div>
+          <div class="metric"><span class="metric-val">+40%</span><span class="metric-label">Retention</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-entry">
+      <div class="exp-meta">
+        <div class="exp-period">2020<br/>Present</div>
+        <div class="exp-company">Personal &amp; Clients</div>
+      </div>
+      <div>
+        <div class="exp-role">Custom PC Builder</div>
+        <ul class="exp-bullets">
+          <li>Designed and assembled custom PCs for clients — component research, procurement, assembly, OS setup, and post-build testing.</li>
+        </ul>
+        <div class="metrics-row">
+          <div class="metric"><span class="metric-val">5+</span><span class="metric-label">Builds</span></div>
+          <div class="metric"><span class="metric-val">100%</span><span class="metric-label">Client Sat.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section class="cv-section" id="education">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <h2 class="section-title">Education</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="edu-entry">
+      <div>
+        <div class="edu-year">2025 — Now</div>
+        <div class="edu-institution">Coursera</div>
+      </div>
+      <div>
+        <div class="edu-qual">Google Data Analytics Certificate</div>
+        <div class="edu-detail">Covering SQL, spreadsheets, Tableau, R, and data storytelling.</div>
+        <div class="progress-wrap">
+          <div class="progress-bar"><div class="progress-fill" data-width="50"></div></div>
+          <span class="progress-label">Module 4 of 8</span>
+        </div>
+        <div class="edu-status">In Progress</div>
+      </div>
+    </div>
+
+    <div class="edu-entry">
+      <div>
+        <div class="edu-year">2023 — 2025</div>
+        <div class="edu-institution">Barking &amp; Dagenham College</div>
+      </div>
+      <div>
+        <div class="edu-qual">T-Level — Engineering &amp; Manufacturing</div>
+        <div class="edu-detail">Awarded Merit in Occupational Specialism: Maintenance, Installation and Repair. Practical training in mechanical &amp; electrical maintenance, CAD modelling, lathes, drills, and mills.</div>
+      </div>
+    </div>
+
+    <div class="edu-entry">
+      <div>
+        <div class="edu-year">2021</div>
+        <div class="edu-institution">Brampton Manor Academy</div>
+      </div>
+      <div>
+        <div class="edu-qual">GCSEs</div>
+        <div class="edu-detail">Mathematics (5) · Music (5) · English Language (4) · Combined Science (4-4) · Geography (4) · BTEC Engineering: Merit Pass</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STRENGTHS -->
+  <section class="cv-section" id="strengths">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <h2 class="section-title">Key Strengths</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="strengths-wrap">
+      <div class="strength-pill">Self-Starter</div>
+      <div class="strength-pill">Entrepreneur</div>
+      <div class="strength-pill">Analytical Mindset</div>
+      <div class="strength-pill">Team Collaborator</div>
+      <div class="strength-pill">Fast Learner</div>
+      <div class="strength-pill">Problem Solver</div>
+      <div class="strength-pill">Detail-Oriented</div>
+      <div class="strength-pill">Data-Driven</div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-left">Full portfolio → <a href="https://akwasi.me" target="_blank">akwasi.me</a></div>
+  <div class="footer-right" id="footerDate"></div>
+</footer>
+
+<script>
+// Cursor
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top = e.clientY + 'px';
+  setTimeout(() => {
+    ring.style.left = e.clientX + 'px';
+    ring.style.top = e.clientY + 'px';
+  }, 80);
+});
+
+// Scroll reveal
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, {threshold: 0.1});
+document.querySelectorAll('.cv-section').forEach(s => observer.observe(s));
+
+// Progress bar animation
+const progObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      const fill = e.target.querySelector('.progress-fill');
+      if(fill) fill.style.width = fill.dataset.width + '%';
+    }
+  });
+}, {threshold: 0.3});
+document.querySelectorAll('.edu-entry').forEach(s => progObserver.observe(s));
+
+// Active nav on scroll
+const sections = document.querySelectorAll('section[id]');
+const navItems = document.querySelectorAll('.nav-item');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if(window.scrollY >= s.offsetTop - 120) current = s.id;
+  });
+  navItems.forEach(n => {
+    n.classList.toggle('active', n.getAttribute('href') === '#' + current);
+  });
+});
+
+// Footer date
+document.getElementById('footerDate').textContent = 'Updated ' + new Date().toLocaleDateString('en-GB', {month:'long',year:'numeric'});
+</script>
+</body>
+</html>
