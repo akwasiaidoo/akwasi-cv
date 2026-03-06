@@ -225,6 +225,9 @@ h<!DOCTYPE html>
     transition:background 0.2s;
   }
   .skill-item:hover{background:rgba(0,229,255,0.04);}
+    .skill-item:nth-last-child(2):nth-child(3n+1){grid-column:span 2;}
+    .skill-item:last-child:nth-child(3n+2){grid-column:span 2;}
+    .skill-item:last-child:nth-child(3n+1){grid-column:span 3;}
   .skill-label{
     font-family:var(--mono);
     font-size:0.65rem;
