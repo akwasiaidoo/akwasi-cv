@@ -210,7 +210,7 @@ h<!DOCTYPE html>
   /* SKILLS GRID */
   .skills-grid{
     display:grid;
-    grid-template-columns:repeat(4,1fr);
+    grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
     gap:1px;
     background:var(--border);
     border:1px solid var(--border);
@@ -616,7 +616,8 @@ h<!DOCTYPE html>
           <span class="skill-tag">HTML/CSS</span>
         </div>
       </div>
-    </div>
+    
+      <div class="skill-item" aria-hidden="true" style="visibility:hidden;pointer-events:none;"></div></div>
   </section>
 
   <!-- EXPERIENCE -->
